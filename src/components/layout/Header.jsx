@@ -1,16 +1,26 @@
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
+  const { logout, currentUser } = useAuth();
+
   return (
-    <header className="bg-gray-100 p-4 flex justify-between">
-      <h1 className="font-bold">Karang Taruna</h1>
-      <button
-        onClick={() => signOut(auth)}
-        className="text-red-500 hover:underline"
-      >
-        Logout
-      </button>
+    <header className="bg-gray-100 p-4 flex justify-between items-center">
+      <h1 className="text-xl font-semibold">Dashboard Karang Taruna</h1>
+      <div className="flex items-center gap-4">
+        {currentUser && (
+          <>
+            <span className="text-sm text-gray-600 capitalize">
+              Role: {currentUser.role || "anggota"}
+            </span>
+            <button
+              onClick={logout}
+              className="bg-red-500 text-white px-3 py-1 rounded"
+            >
+              Logout
+            </button>
+          </>
+        )}
+      </div>
     </header>
   );
 }
