@@ -1,28 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import KegiatanPage from "./pages/KegiatanPage";
-import KeuanganPage from "./pages/KeuanganPage";
-import AnggotaPage from "./pages/AnggotaPage";
-import LoginPage from "./pages/LoginPage";
+import React from "react";
+import AppRoutes from "./routes/AppRoutes";
+import Sidebar from "./components/layout/Sidebar";
+import Header from "./components/layout/Header";
+import { useAuth } from "./contexts/AuthContext";
 
-function App() {
+const App = () => {
+  const { currentUser } = useAuth();
+
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="kegiatan" element={<KegiatanPage />} />
-            <Route path="keuangan" element={<KeuanganPage />} />
-            <Route path="anggota" element={<AnggotaPage />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <div className="flex h-screen">
+      {currentUser && <Sidebar />}
+      <div className="flex-1 flex flex-col">
+        {currentUser && <Header />}
+        <main className="flex-1 overflow-y-auto p-4">
+          <AppRoutes />
+        </main>
+      </div>
+    </div>
   );
-}
+};
 
 export default App;
